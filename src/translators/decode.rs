@@ -180,10 +180,13 @@ pub fn print_decoded_token(
             println!("{}", to_string_pretty(&TokenOutput::new(token)).unwrap())
         }
         (_, Ok(token)) => {
-            bunt::println!("\n{$bold}Token header\n------------{/$}");
-            println!("{}\n", to_string_pretty(&token.header).unwrap());
-            bunt::println!("{$bold}Token claims\n------------{/$}");
-            println!("{}", to_string_pretty(&token.claims).unwrap());
+            bunt::println!("\n{$bold+cyan}Token header\n------------{/$}");
+            bunt::println!("{$cyan}{}{/$}\n", to_string_pretty(&token.header).unwrap());
+            bunt::println!("{$bold+yellow}Token claims\n------------{/$}");
+            bunt::println!(
+                "{$yellow}{}{/$}\n",
+                to_string_pretty(&token.claims).unwrap()
+            );
         }
         (_, Err(_)) => exit(1),
     }
