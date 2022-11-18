@@ -1,5 +1,7 @@
 include!("../src/main.rs");
 
+use crate::translators::decode::DecodedTokenOutput;
+
 #[cfg(test)]
 mod tests {
     use super::cli_config::{App, DecodeArgs, EncodeArgs};
@@ -55,7 +57,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
 
@@ -91,7 +96,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
 
@@ -115,7 +123,11 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, token_data, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            token_data,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_err());
 
@@ -137,7 +149,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
 
@@ -168,7 +183,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
 
@@ -197,7 +215,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
 
@@ -221,7 +242,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_err());
     }
@@ -246,7 +270,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
     }
@@ -270,7 +297,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
 
@@ -308,7 +338,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
 
@@ -340,7 +373,10 @@ mod tests {
             .unwrap();
         let decode_matches = matches.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
     }
@@ -357,7 +393,11 @@ mod tests {
             .unwrap();
         let decode_matches = matches.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, format) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            format,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
         assert!(format == OutputFormat::Json);
@@ -378,7 +418,10 @@ mod tests {
             .unwrap();
         let decode_matches = matches.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_err());
     }
@@ -396,7 +439,10 @@ mod tests {
             .unwrap();
         let decode_matches = matches.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
     }
@@ -412,7 +458,10 @@ mod tests {
             .unwrap();
         let decode_matches = matches.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
     }
@@ -428,7 +477,10 @@ mod tests {
             .unwrap();
         let decode_matches = matches.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
     }
@@ -444,7 +496,10 @@ mod tests {
             .unwrap();
         let decode_matches = matches.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
     }
@@ -480,7 +535,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
     }
@@ -549,7 +607,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
     }
@@ -570,7 +631,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(result.is_ok());
     }
@@ -606,7 +670,10 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (result, _, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: result,
+            ..
+        } = decode_token(&decode_arguments);
 
         dbg!(&result);
 
@@ -643,7 +710,11 @@ mod tests {
             .unwrap();
         let decode_matches = decode_matcher.subcommand_matches("decode").unwrap();
         let decode_arguments = DecodeArgs::from_arg_matches(decode_matches).unwrap();
-        let (decoded_token, token_data, _) = decode_token(&decode_arguments);
+        let crate::DecodedTokenOutput {
+            validated_token: decoded_token,
+            token_data,
+            ..
+        } = decode_token(&decode_arguments);
 
         assert!(decoded_token.is_ok());
 

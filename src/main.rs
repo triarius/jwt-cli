@@ -26,9 +26,7 @@ fn main() {
             print_encoded_token(token);
         }
         Commands::Decode(arguments) => {
-            let (validated_token, token_data, format) = decode_token(arguments);
-
-            print_decoded_token(validated_token, token_data, format);
+            print_decoded_token(decode_token(arguments));
         }
     }
 }

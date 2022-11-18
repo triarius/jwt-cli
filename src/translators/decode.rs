@@ -74,13 +74,16 @@ pub fn decoding_key_from_secret(
     }
 }
 
-pub fn decode_token(
-    arguments: &DecodeArgs,
-) -> (
-    JWTResult<TokenData<Payload>>,
-    JWTResult<TokenData<Payload>>,
-    OutputFormat,
-) {
+pub struct DecodedTokenOutput {
+    pub validated_token: JWTResult<TokenData<Payload>>,
+    pub token_data: JWTResult<TokenData<Payload>>,
+    pub header: String,
+    pub claims: String,
+    pub signature: String,
+    pub format: OutputFormat,
+}
+
+pub fn decode_token(arguments: &DecodeArgs) -> DecodedTokenOutput {
     let algorithm = translate_algorithm(&arguments.algorithm);
     let secret = match arguments.secret.len() {
         0 => None,
@@ -116,25 +119,38 @@ pub fn decode_token(
         token
     });
 
-    (
-        match secret {
+    let mut itr = jwt.split(".");
+    let header = itr.next().unwrap().to_owned();
+    let claims = itr.next().unwrap().to_owned();
+    let signature = itr.next().unwrap().to_owned();
+
+    DecodedTokenOutput {
+        validated_token: match secret {
             Some(secret_key) => decode::<Payload>(&jwt, &secret_key.unwrap(), &secret_validator),
             None => dangerous_insecure_decode::<Payload>(&jwt),
         },
         token_data,
-        if arguments.json {
+        header,
+        claims,
+        signature,
+        format: if arguments.json {
             OutputFormat::Json
         } else {
             OutputFormat::Text
         },
-    )
+    }
 }
 
-pub fn print_decoded_token(
-    validated_token: JWTResult<TokenData<Payload>>,
-    token_data: JWTResult<TokenData<Payload>>,
-    format: OutputFormat,
-) {
+pub fn print_decoded_token(t: DecodedTokenOutput) {
+    let DecodedTokenOutput {
+        validated_token,
+        token_data,
+        header,
+        claims,
+        signature,
+        format,
+    } = t;
+
     if let Err(err) = &validated_token {
         match err.kind() {
             ErrorKind::InvalidToken => {
@@ -180,6 +196,13 @@ pub fn print_decoded_token(
             println!("{}", to_string_pretty(&TokenOutput::new(token)).unwrap())
         }
         (_, Ok(token)) => {
+            bunt::println!("\n{$bold}JWT\n------------{/$}");
+            bunt::println!(
+                "{$cyan}{}{/$}.{$yellow}{}{/$}.{$magenta}{}{/$}\n",
+                header,
+                claims,
+                signature
+            );
             bunt::println!("\n{$bold+cyan}Token header\n------------{/$}");
             bunt::println!("{$cyan}{}{/$}\n", to_string_pretty(&token.header).unwrap());
             bunt::println!("{$bold+yellow}Token claims\n------------{/$}");
@@ -187,6 +210,8 @@ pub fn print_decoded_token(
                 "{$yellow}{}{/$}\n",
                 to_string_pretty(&token.claims).unwrap()
             );
+            bunt::println!("{$bold+magenta}Token signature\n------------{/$}");
+            bunt::println!("{$magenta}{}{/$}\n", signature);
         }
         (_, Err(_)) => exit(1),
     }
